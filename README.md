@@ -39,7 +39,7 @@ $ cargo run 5510 1
 
 ### stop_id 
 
-We can find the `stop_id` on the Metlink website (https://www.metlink.org.nz/), simply find you desired stop, click on it, and the 4 digit number correspnds to the `stop_id`, the first argument the CLI requires. 
+We can find the `stop_id` on the Metlink website (https://www.metlink.org.nz/), simply find you desired stop, click on it, and the 4 digit number correspnds to the `stop_id`, e.g. "Stop 5510 Willis Street at Willbank Court" has the `stop_id` of 5510.
 
 ### service_id 
 
