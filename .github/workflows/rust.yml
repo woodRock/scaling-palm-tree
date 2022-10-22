@@ -17,10 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: | 
-        cd mbtt
-        cargo build --verbose
+      run: cargo build --verbose
     - name: Run tests
-      run: | 
-        cd mbtt 
-        cargo test --verbose
+      run: cargo test --verbose
