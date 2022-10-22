@@ -1,7 +1,8 @@
 /// Main - main.rs 
 /// ==============
 /// A command line interface (CLI) to display departure boards for buses in Wellington, New Zealand. 
-/// This make an HTTP request to the Metlink API (https://opendata.metlink.org.nz/) to retrieve times. 
+/// This make an HTTP request to the Metlink API (https://opendata.metlink.org.nz/) to retrieve times.
+/// The CLI filters the departure board for a stop by service, and supports cancellations, wheelchair access.
 
 use clap::Parser;
 use serde_json::{Value};
