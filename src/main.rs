@@ -27,35 +27,37 @@ fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     // Some buses are cancelled, minutes to arrival is replaced with a cancellation notice.
     if departure["status"] == "cancelled" {
         println!("{}\t{}\t{}", service_id, destination, "CAN");
-    } else {
-        // Caculate minutes to arrival in minutes. 
-        let now = chrono::Local::now();
-        let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
-        let minutes = departure_time.signed_duration_since(now).num_minutes();
-        
-        // Buses less than minutes away are due. 
-        if minutes < 0 {
-            if departure["wheelchair_accessible"] == true {
-                println!("{}\t{}\t{}\t♿", service_id, destination, "DUE");
-            } else {
-                println!("{}\t{}\t{}", service_id, destination, "DUE");
-            }
-        // Buses more than an hour away are given in time, not hours. 
-        } else if minutes > 60 {
-            if departure["wheelchair_accessible"] == true {
-                println!("{}\t{}\t{}\t♿", service_id, destination, departure_time.format("%H:%M%p"));
-            } else {
-                println!("{}\t{}\t{}", service_id, destination, departure_time.format("%H:%M%p"));
-            }
-        // All other buses are given in minutes to arrival. 
+        return;
+    }
+
+    // Caculate minutes to arrival in minutes. 
+    let now = chrono::Local::now();
+    let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
+    let minutes = departure_time.signed_duration_since(now).num_minutes();
+    
+    // Buses less than minutes away are due. 
+    if minutes < 0 {
+        if departure["wheelchair_accessible"] == true {
+            println!("{}\t{}\t{}\t♿", service_id, destination, "DUE");
         } else {
-            println!("{}\t{}\t{}min", service_id, destination, minutes);
-            if departure["wheelchair_accessible"] == true {
-                println!("{}\t{}\t{}min\t♿", service_id, destination, minutes);
-            } else {
-                println!("{}\t{}\t{}min", service_id, destination, minutes);
-            }
+            println!("{}\t{}\t{}", service_id, destination, "DUE");
         }
+    // Buses more than an hour away are given in time, not hours. 
+    } else if minutes > 60 {
+        if departure["wheelchair_accessible"] == true {
+            println!("{}\t{}\t{}\t♿", service_id, destination, departure_time.format("%H:%M%p"));
+        } else {
+            println!("{}\t{}\t{}", service_id, destination, departure_time.format("%H:%M%p"));
+        }
+        return;
+    }
+
+    // All other buses are given in minutes to arrival. 
+    println!("{}\t{}\t{}min", service_id, destination, minutes);
+    if departure["wheelchair_accessible"] == true {
+        println!("{}\t{}\t{}min\t♿", service_id, destination, minutes);
+    } else {
+        println!("{}\t{}\t{}min", service_id, destination, minutes);
     }
 }
 
