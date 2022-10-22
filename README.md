@@ -1,5 +1,8 @@
-# scaling-palm-tree
-A command-line interface (CLI) for bus timetables in Wellington, New Zealand.
+# Metlink Departure Boards (CLI)
+
+A command line interface (CLI) to display departure boards for buses in Wellington, New Zealand. 
+
+This make an HTTP request to the Metlink API (https://opendata.metlink.org.nz/) to retrieve times. 
 
 ## Install Rust 
 
@@ -9,12 +12,12 @@ Rust can be installed on a Linux platform using the following command.
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-## Example 
+## Example Usage
 
-When we run the client, we give the stop id and service number as arguments. 
+When we run the client, we give the `stop_id` and `service_id` as arguments. 
 
 ```bash
-# cargo run <stop_id> <service_number>
+# cargo run <stop_id> <service_id>
 $ cargo run 5510 1 
 ```
 
