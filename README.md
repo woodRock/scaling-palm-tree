@@ -37,3 +37,6 @@ Here is an example output given from the CLI.
 ````
 
 It is designed to mimic the Metservice Wellington Departure Timetables for a given stop. 
+
+![departutre_board_IRL](https://user-images.githubusercontent.com/18411037/197334859-fb8c2db0-f3b2-4d22-845a-0e310d66112b.jpg)
+
