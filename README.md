@@ -52,6 +52,10 @@ Rust can be installed on a Linux platform using the following command.
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
+## Bash API call
 
+```bash
+$ curl -X GET "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id=<stop_id>" -H "accept: application/json" -H "x-api-key: <api-key>"
+```
 
 
