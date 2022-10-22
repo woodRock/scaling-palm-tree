@@ -21,4 +21,6 @@ jobs:
         cd mbtt
         cargo build --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: | 
+        cd mbtt 
+        cargo test --verbose
