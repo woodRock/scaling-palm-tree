@@ -41,29 +41,29 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 departure_time = departure["arrival"]["expected"].as_str().unwrap();
             }   
             if departure["status"] == "cancelled" {
-                println!("{}\t{}\t{}", args.stop_id, destination, "CAN");
+                println!("{}\t{}\t{}", args.service_id, destination, "CAN");
             } else {
                 let now = chrono::Local::now();
                 let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
                 let minutes = departure_time.signed_duration_since(now).num_minutes();
                 if minutes < 0 {
                     if departure["wheelchair_accessible"] == true {
-                        println!("{}\t{}\t{}\t♿", args.stop_id, destination, "DUE");
+                        println!("{}\t{}\t{}\t♿", args.service_id, destination, "DUE");
                     } else {
-                        println!("{}\t{}\t{}", args.stop_id, destination, "DUE");
+                        println!("{}\t{}\t{}", args.service_id, destination, "DUE");
                     }
                 } else if minutes > 60 {
                     if departure["wheelchair_accessible"] == true {
-                        println!("{}\t{}\t{}\t♿", args.stop_id, destination, departure_time.format("%H:%M%p"));
+                        println!("{}\t{}\t{}\t♿", args.service_id, destination, departure_time.format("%H:%M%p"));
                     } else {
-                        println!("{}\t{}\t{}", args.stop_id, destination, departure_time.format("%H:%M%p"));
+                        println!("{}\t{}\t{}", args.service_id, destination, departure_time.format("%H:%M%p"));
                     }
                 } else {
-                    println!("{}\t{}\t{}min", args.stop_id, destination, minutes);
+                    println!("{}\t{}\t{}min", args.service_id, destination, minutes);
                     if departure["wheelchair_accessible"] == true {
-                        println!("{}\t{}\t{}min\t♿", args.stop_id, destination, minutes);
+                        println!("{}\t{}\t{}min\t♿", args.service_id, destination, minutes);
                     } else {
-                        println!("{}\t{}\t{}min", args.stop_id, destination, minutes);
+                        println!("{}\t{}\t{}min", args.service_id, destination, minutes);
                     }
                 }
             }

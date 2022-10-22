@@ -21,19 +21,19 @@ $ cargo run 5510 1
 Here is an example output given from the CLI. 
 
 ```
-5510    Island Bay      9min
-5510    Island Bay      9min    ♿
-5510    Island Bay      CAN
-5510    Island Bay      08:17AM
-5510    Island Bay      08:32AM
-5510    Island Bay      08:47AM
-5510    Island Bay      09:04AM
-5510    Island Bay      09:17AM
-5510    Island Bay      09:32AM
-5510    Island Bay      09:49AM
-5510    Island Bay      10:04AM
-5510    Island Bay      10:19AM
-5510    Island Bay      10:34AM
+1    Island Bay      9min
+1    Island Bay      9min    ♿
+1    Island Bay      CAN
+1    Island Bay      08:17AM
+1    Island Bay      08:32AM
+1    Island Bay      08:47AM
+1    Island Bay      09:04AM
+1    Island Bay      09:17AM
+1    Island Bay      09:32AM
+1    Island Bay      09:49AM
+1    Island Bay      10:04AM
+1    Island Bay      10:19AM
+1    Island Bay      10:34AM
 ````
 
 It is designed to mimic the Metservice Wellington Departure Timetables for a given stop. 
