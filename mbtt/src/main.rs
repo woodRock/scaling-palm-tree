@@ -1,11 +1,20 @@
-#[allow(unused)]
-use std::collections::HashMap;
+use clap::Parser;
+use serde_json::{Value};
+
+#[derive(Parser)]
+struct Cli {
+    stop_id: String,
+    service_id: String,
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    
+    let args = Cli::parse();
+
     let request_url = format!(
         "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id={stop_id}", 
-        stop_id = "5510",
+        stop_id = args.stop_id,
     );
 
     let client = reqwest::Client::new();
@@ -17,13 +26,49 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .send()
         .await?
         .text()
-        // .json::<HashMap<String, String>>()
         .await?;
 
-    // // Remove escape characters from the response
-    // let resp = resp.replace("\\", "");
+    let json_value: Value = serde_json::from_str(&resp).unwrap();
+    let departures = json_value["departures"].as_array().unwrap();
 
-    println!("{:#?}", resp);
+    for departure in departures {
+        if departure["service_id"] == args.service_id {
+            let destination = departure["destination"]["name"].as_str().unwrap();
+            let departure_time;
+            if departure["arrival"]["expected"].is_null() {
+                departure_time = departure["arrival"]["aimed"].as_str().unwrap();
+            } else {
+                departure_time = departure["arrival"]["expected"].as_str().unwrap();
+            }   
+            if departure["status"] == "cancelled" {
+                println!("{}\t{}\t{}", args.stop_id, destination, "CAN");
+            } else {
+                let now = chrono::Local::now();
+                let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
+                let minutes = departure_time.signed_duration_since(now).num_minutes();
+                if minutes < 0 {
+                    if departure["wheelchair_accessible"] == true {
+                        println!("{}\t{}\t{}\t♿", args.stop_id, destination, "DUE");
+                    } else {
+                        println!("{}\t{}\t{}", args.stop_id, destination, "DUE");
+                    }
+                } else if minutes > 60 {
+                    if departure["wheelchair_accessible"] == true {
+                        println!("{}\t{}\t{}\t♿", args.stop_id, destination, departure_time.format("%H:%M%p"));
+                    } else {
+                        println!("{}\t{}\t{}", args.stop_id, destination, departure_time.format("%H:%M%p"));
+                    }
+                } else {
+                    println!("{}\t{}\t{}min", args.stop_id, destination, minutes);
+                    if departure["wheelchair_accessible"] == true {
+                        println!("{}\t{}\t{}min\t♿", args.stop_id, destination, minutes);
+                    } else {
+                        println!("{}\t{}\t{}min", args.stop_id, destination, minutes);
+                    }
+                }
+            }
+        }
+    }
     
     Ok(())
 }
