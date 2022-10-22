@@ -1,4 +1,5 @@
 # Metlink Departure Boards (CLI)
+[![Rust](https://github.com/woodRock/scaling-palm-tree/actions/workflows/rust.yml/badge.svg)](https://github.com/woodRock/scaling-palm-tree/actions/workflows/rust.yml)
 
 A command line interface (CLI) to display departure boards for buses in Wellington, New Zealand. 
 
