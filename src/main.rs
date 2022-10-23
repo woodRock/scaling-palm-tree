@@ -16,7 +16,7 @@ struct Cli {
 /// Prints a departure objective nicely to the terminal. 
 fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     let destination = departure["destination"]["name"].as_str().unwrap();
-    let mut print_str: String = format!("{}\t{}\t", service_id, destination);
+    let mut print_str = format!("{}\t{}\t", service_id, destination);
     let departure_time;
     // When buses are far away, the only estimate is the scheduled departure time.
     if departure["arrival"]["expected"].is_null() {
@@ -34,7 +34,6 @@ fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     let now = chrono::Local::now();
     let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
     let minutes = departure_time.signed_duration_since(now).num_minutes();
-
     // Buses less than minutes away are due. 
     if minutes < 0 {
         print_str.push_str("Due\t");
@@ -80,7 +79,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let json_value = get_departure_board(args.stop_id).await?;
     let departures = json_value["departures"].as_array().unwrap();
     departures.into_iter()
-        .filter(|departure| departure["service_id"] == args.service_id.clone())
+        .filter(|departure| departure["service_id"] == args.service_id)
         .for_each(|departure| pretty_print_departure(departure, args.service_id.clone()));
     Ok(())
 }
