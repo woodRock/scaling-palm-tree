@@ -2,6 +2,14 @@
 name = "mbtt"
 version = "0.1.0"
 edition = "2021"
+authors = "j.r.h.wood98@gmail.com"
+license = "MIT"
+description = "CLI for bus timetables for Wellington, NZ"
+readme = "README.md" 
+homepage = "https://github.com/woodRock/scaling-palm-tree"
+repository = "https://github.com/woodRock/scaling-palm-tree" 
+keywords = ["cli", "metlink","bus"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
