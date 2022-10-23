@@ -14,7 +14,7 @@ struct Cli {
 }
 
 /// Prints a departure objective nicely to the terminal. 
-fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
+fn pretty_format(departure: &serde_json::Value, service_id: &String) -> String {
     let destination = departure["destination"]["name"].as_str().unwrap();
     let mut print_str = format!("{}\t{}\t", service_id, destination);
     let departure_time;
@@ -28,7 +28,7 @@ fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     // Some buses are cancelled, minutes to arrival is replaced with a cancellation notice.
     if departure["status"] == "cancelled" {
         print_str.push_str("CAN\t");
-        return;
+        return print_str;
     }
     // Caculate minutes to arrival in minutes. 
     let now = chrono::Local::now();
@@ -50,7 +50,7 @@ fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     if departure["wheelchair_accessible"] == true {
         print_str.push_str("♿");
     }
-    println!("{}", print_str);
+    return print_str;
 }
 
 /// Make an HTTP request to the Metlink API to retrieve a departure board for a stop.
@@ -80,6 +80,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let departures = json_value["departures"].as_array().unwrap();
     departures.into_iter()
         .filter(|departure| departure["service_id"] == args.service_id)
-        .for_each(|departure| pretty_print_departure(departure, args.service_id.clone()));
+        .map(|departure| pretty_format(departure, &args.service_id))
+        .for_each(|pretty| println!("{}", pretty));
     Ok(())
 }
