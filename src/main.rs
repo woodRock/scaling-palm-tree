@@ -13,7 +13,7 @@ struct Cli {
     service_id: String,
 }
 
-/// Prints a departure objective nicely to the terminal. 
+/// Formats the departure string for a service. 
 fn pretty_format(departure: &serde_json::Value, service_id: &String) -> String {
     let destination = departure["destination"]["name"].as_str().unwrap();
     let mut print_str = format!("{}\t{}\t", service_id, destination);
@@ -81,6 +81,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     departures.into_iter()
         .filter(|departure| departure["service_id"] == args.service_id)
         .map(|departure| pretty_format(departure, &args.service_id))
-        .for_each(|pretty| println!("{}", pretty));
+        .for_each(|departure| println!("{}", departure));
     Ok(())
 }
