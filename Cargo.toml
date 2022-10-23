@@ -2,7 +2,7 @@
 name = "mbtt"
 version = "0.1.0"
 edition = "2021"
-authors = "j.r.h.wood98@gmail.com"
+authors = ["Jesse Wood <j.r.h.wood98@gmail.com>"]
 license = "MIT"
 description = "CLI for bus timetables for Wellington, NZ"
 readme = "README.md" 
