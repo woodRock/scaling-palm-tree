@@ -28,28 +28,28 @@ fn pretty_print_departure(departure: &serde_json::Value, service_id: String) {
     // Some buses are cancelled, minutes to arrival is replaced with a cancellation notice.
     if departure["status"] == "cancelled" {
         print_str.push_str("CAN\t");
-    } else {
-        // Caculate minutes to arrival in minutes. 
-        let now = chrono::Local::now();
-        let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
-        let minutes = departure_time.signed_duration_since(now).num_minutes();
+        return;
+    }
+    // Caculate minutes to arrival in minutes. 
+    let now = chrono::Local::now();
+    let departure_time = chrono::DateTime::parse_from_rfc3339(departure_time).unwrap();
+    let minutes = departure_time.signed_duration_since(now).num_minutes();
 
-        // Buses less than minutes away are due. 
-        if minutes < 0 {
-            print_str.push_str("Due\t");
-        // Buses more than an hour away are given in time, not hours. 
-        } else if minutes > 60 {
-            let time_format = format!("{}\t", departure_time.format("%H:%M%p"));
-            print_str.push_str(&time_format);
-        // All other buses are given in minutes to arrival. 
-        } else {
-            let minutes_format = format!("{}min\t", minutes);
-            print_str.push_str(&minutes_format);
-        }
-        // Provide a wheelchair access indicator for accesibility.
-        if departure["wheelchair_accessible"] == true {
-            print_str.push_str("♿");
-        }
+    // Buses less than minutes away are due. 
+    if minutes < 0 {
+        print_str.push_str("Due\t");
+    // Buses more than an hour away are given in time, not hours. 
+    } else if minutes > 60 {
+        let time_format = format!("{}\t", departure_time.format("%H:%M%p"));
+        print_str.push_str(&time_format);
+    // All other buses are given in minutes to arrival. 
+    } else {
+        let minutes_format = format!("{}min\t", minutes);
+        print_str.push_str(&minutes_format);
+    }
+    // Provide a wheelchair access indicator for accesibility.
+    if departure["wheelchair_accessible"] == true {
+        print_str.push_str("♿");
     }
     println!("{}", print_str);
 }
