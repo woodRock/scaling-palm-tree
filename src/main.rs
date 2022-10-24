@@ -60,16 +60,28 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
         stop_id = stop_id,
     );
     let client = reqwest::Client::new();
-    let resp = client.
-        get(request_url)
+    let resp = client
+        .get(request_url)
         .header("x-api-key", "gyvdsui0lN1yehMHCsyIN3MejCwkIszh3NOj513P")
         .header("accept", "application/json")        
         .send()
-        .await?
-        .text()
         .await?;
-    let json_value: Value = serde_json::from_str(&resp).unwrap();
-    return Ok(json_value);
+    match resp.status() { 
+        reqwest::StatusCode::OK => {
+            let body: String = resp.text().await?;
+            let v: Value = serde_json::from_str(&body)?;
+            return Ok(v);
+        },
+        reqwest::StatusCode::UNAUTHORIZED => {
+            panic!("Unauthorized. Please provdie an API key.");
+        },
+        reqwest::StatusCode::FORBIDDEN => {
+            panic!("Forbidden. Please check your API key.");
+        },
+        _ => {
+            panic!("Unknown error");
+        },
+    };
 }
 
 #[tokio::main]
