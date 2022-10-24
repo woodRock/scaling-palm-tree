@@ -13,6 +13,37 @@ struct Cli {
     service_id: String,
 }
 
+/// Make an HTTP request to the Metlink API to retrieve a departure board for a stop.
+async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::error::Error>> {
+    let request_url = format!(
+        "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id={stop_id}", 
+        stop_id = stop_id,
+    );
+    let client = reqwest::Client::new();
+    let resp = client
+        .get(request_url)
+        .header("x-api-key", "gyvdsui0lN1yehMHCsyIN3MejCwkIszh3NOj513P")
+        .header("accept", "application/json")        
+        .send()
+        .await?;
+    match resp.status() { 
+        reqwest::StatusCode::OK => {
+            let body: String = resp.text().await?;
+            let v: Value = serde_json::from_str(&body)?;
+            return Ok(v);
+        },
+        reqwest::StatusCode::UNAUTHORIZED => {
+            panic!("Unauthorized. Please provide an API key.");
+        },
+        reqwest::StatusCode::FORBIDDEN => {
+            panic!("Forbidden. Please check your API key.");
+        },
+        _ => {
+            panic!("Unknown error: {}", resp.status());
+        },
+    };
+}
+
 /// Formats the departure string for a service. 
 fn pretty_format(departure: &serde_json::Value, service_id: &String) -> String {
     let destination = departure["destination"]["name"].as_str().unwrap();
@@ -51,37 +82,6 @@ fn pretty_format(departure: &serde_json::Value, service_id: &String) -> String {
         print_str.push_str("♿");
     }
     return print_str;
-}
-
-/// Make an HTTP request to the Metlink API to retrieve a departure board for a stop.
-async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::error::Error>> {
-    let request_url = format!(
-        "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id={stop_id}", 
-        stop_id = stop_id,
-    );
-    let client = reqwest::Client::new();
-    let resp = client
-        .get(request_url)
-        .header("x-api-key", "gyvdsui0lN1yehMHCsyIN3MejCwkIszh3NOj513P")
-        .header("accept", "application/json")        
-        .send()
-        .await?;
-    match resp.status() { 
-        reqwest::StatusCode::OK => {
-            let body: String = resp.text().await?;
-            let v: Value = serde_json::from_str(&body)?;
-            return Ok(v);
-        },
-        reqwest::StatusCode::UNAUTHORIZED => {
-            panic!("Unauthorized. Please provide an API key.");
-        },
-        reqwest::StatusCode::FORBIDDEN => {
-            panic!("Forbidden. Please check your API key.");
-        },
-        _ => {
-            panic!("Unknown error: {}", resp.status());
-        },
-    };
 }
 
 #[tokio::main]
