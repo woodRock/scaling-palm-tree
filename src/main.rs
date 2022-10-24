@@ -62,7 +62,7 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
     let client = reqwest::Client::new();
     let resp = client
         .get(request_url)
-        .header("x-api-key", "gyvdsui0lN1yehMHCsyIN3MejCwkIszh3NOj513P")
+        // .header("x-api-key", "gyvdsui0lN1yehMHCsyIN3MejCwkIszh3NOj513P")
         .header("accept", "application/json")        
         .send()
         .await?;
@@ -79,7 +79,7 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
             panic!("Forbidden. Please check your API key.");
         },
         _ => {
-            panic!("Unknown error");
+            panic!("Unknown error: {}", resp.status());
         },
     };
 }
