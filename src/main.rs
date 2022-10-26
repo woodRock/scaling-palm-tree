@@ -8,9 +8,11 @@ use clap::Parser;
 use serde_json::{Value};
 
 #[derive(Parser)]
+#[clap(author="Jesse Wood", version, about="Simple CLI for bus departures in Wellington, NZ.")]
 struct Cli {
     stop_id: String,
     service_id: String,
+    limit: Option<usize>,
 }
 
 /// Make an HTTP request to the Metlink API to retrieve a departure board for a stop.
@@ -90,9 +92,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
     let json_value = get_departure_board(args.stop_id).await?;
     let departures = json_value["departures"].as_array().unwrap();
-    departures.into_iter()
+    let limit = match args.limit {
+        Some(x) => x,
+        None => departures.len(),
+    };
+    departures
+        .into_iter()
         .filter(|departure| departure["service_id"] == args.service_id)
         .map(|departure| pretty_format(departure, &args.service_id))
+        .take(limit)
         .for_each(|departure| println!("{}", departure));
     Ok(())
 }
