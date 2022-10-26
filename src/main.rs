@@ -99,8 +99,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     departures
         .into_iter()
         .filter(|departure| departure["service_id"] == args.service_id)
-        .map(|departure| pretty_format(departure, &args.service_id))
         .take(limit)
+        .map(|departure| pretty_format(departure, &args.service_id))
         .for_each(|departure| println!("{}", departure));
     Ok(())
 }
