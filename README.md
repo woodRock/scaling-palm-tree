@@ -29,7 +29,7 @@ It is designed to mimic the Metservice Wellington Departure Timetables for a giv
 
 ## Usage
 
-When we run the client, we give the `stop_id` and `service_id` as arguments. 
+When we run the client, we give the `stop_id` and `service_id` as arguments, with optional argument `limit`. 
 
 ```bash
 # cargo run <stop_id> <service_id> [limit]
