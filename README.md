@@ -32,8 +32,8 @@ It is designed to mimic the Metservice Wellington Departure Timetables for a giv
 When we run the client, we give the `stop_id` and `service_id` as arguments. 
 
 ```bash
-# cargo run <stop_id> <service_id>
-$ cargo run 5510 1 
+# cargo run <stop_id> <service_id> [limit]
+$ cargo run 5510 1 5;
 ```
 
 ### stop_id 
@@ -44,18 +44,22 @@ We can find the `stop_id` on the Metlink website (https://www.metlink.org.nz/), 
 
 The `service_id` is the number of the bus, e.g. the "1 - Island Bay" has the `service_id` of 1. 
 
-## Install Rust 
+## limit 
 
-Rust can be installed on a Linux platform using the following command. 
-
-```bash 
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
+The `limit` is an optional argument, where the user can specify the number of departures to display. Given in chronological order showing the nearest services first. If the `limit` is not specified, all departures returned by the API call are shown. E.g. the command above with `limit` of 5 will only show the next 5 departures.
 
 ## Bash API call
+
+This bash script gives the API call to the Metlink API for reference. 
 
 ```bash
 $ curl -X GET "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id=<stop_id>" -H "accept: application/json" -H "x-api-key: <api-key>"
 ```
 
+## Install Rust 
 
+You need rust installed on your machine in order to run the development environment. Rust can be installed on a Linux platform using the following command. 
+
+```bash 
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```

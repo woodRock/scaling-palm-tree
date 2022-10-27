@@ -34,9 +34,6 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
             let v: Value = serde_json::from_str(&body)?;
             return Ok(v);
         },
-        reqwest::StatusCode::UNAUTHORIZED => {
-            panic!("Unauthorized. Please provide an API key.");
-        },
         reqwest::StatusCode::FORBIDDEN => {
             panic!("Forbidden. Please check your API key.");
         },
