@@ -41,7 +41,7 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
             panic!("Forbidden. Please check your API key.");
         },
         _ => {
-            panic!("Unknown error: {}", resp.status());
+            panic!("Unknown error: {}\nPlease check if service id {} exists.", resp.status(), stop_id);
         },
     };
 }
