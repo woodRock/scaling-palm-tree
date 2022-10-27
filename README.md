@@ -44,7 +44,7 @@ We can find the `stop_id` on the Metlink website (https://www.metlink.org.nz/), 
 
 The `service_id` is the number of the bus, e.g. the "1 - Island Bay" has the `service_id` of 1. 
 
-## limit 
+### limit 
 
 The `limit` is an optional argument, where the user can specify the number of departures to display. Given in chronological order showing the nearest services first. If the `limit` is not specified, all departures returned by the API call are shown. E.g. the command above with `limit` of 5 will only show the next 5 departures.
 
