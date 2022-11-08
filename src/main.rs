@@ -36,10 +36,10 @@ async fn get_departure_board(stop_id: String) -> Result<Value, Box<dyn std::erro
             let body: String = resp.text().await?;
             let v: Value = serde_json::from_str(&body)?;
             Ok(v)
-        },
+        }
         reqwest::StatusCode::FORBIDDEN => {
             panic!("Forbidden. Please check your API key.");
-        },
+        }
         _ => {
             panic!(
                 "Unknown error: {}\nPlease check if service id {} exists.",
@@ -87,7 +87,7 @@ fn pretty_format(departure: &serde_json::Value, service_id: &String) -> String {
             print_str.push('♿');
         };
         print_str
-    }   
+    }
 }
 
 #[tokio::main]
