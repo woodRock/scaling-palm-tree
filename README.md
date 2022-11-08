@@ -1,6 +1,6 @@
 # Metlink Departure Boards (CLI)
 
-[![Rust](https://github.com/woodRock/scaling-palm-tree/actions/workflows/rust.yml/badge.svg)](https://github.com/woodRock/scaling-palm-tree/actions/workflows/rust.yml)
+[![CI](https://github.com/woodRock/scaling-palm-tree/actions/workflows/ci.yml/badge.svg)](https://github.com/woodRock/scaling-palm-tree/actions/workflows/ci.yml)
 
 A command line interface (CLI) to display departure boards for buses in Wellington, New Zealand. This make an HTTP request to the [Metlink API](https://opendata.metlink.org.nz/) to retrieve times. The CLI filters the departure board for a stop by service, and supports cancellations, wheelchair access.
 
